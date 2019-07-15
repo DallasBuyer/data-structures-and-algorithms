@@ -160,6 +160,11 @@ time: 2019.07.01
 - 插入多个行: INSERT INTO customers(template) VALUES(values); INSERT INTO customers(template) VALUES(values); 或者 INSERT INTO customers(template) VALUES(values1), (values2);
 - 插入检索出的数据: INSERT INTO customers(template) SELECT template FROM custnew;(SELECT语句也可以包含WHERE子句过滤插入的数据)
 
+### 更新和删除数据
+- 更新特定行数据: UPDATE table_name SET col_name1='value1', col_name2='value2' WHERE col_name3 = 'value3'
+- 更新所有行数据: UPDATE table_name SET col_name1='value1', col_name2='value2'
+- 删除特定行数据: DELETE FROM table_name WHERE col_name = 'values'
+
 
 
 
