@@ -127,6 +127,9 @@ time: 2019.07.01
 - 返回某列的最小值: SELECT MIN(col_price) AS min_price FROM table_name;
 - 返回某列值的和: SELECT SUM(col_price*quantity) AS sum_price FROM table_name;
 
+### 分组数据
+- 创建分组: SELECT vend_id, COUNT(*) AS num_probs FROM table_name GROUP BY vend_id;
+- 
 
 
 ## **Python知识点**
