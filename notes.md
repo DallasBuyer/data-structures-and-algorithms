@@ -129,7 +129,38 @@ time: 2019.07.01
 
 ### 分组数据
 - 创建分组: SELECT vend_id, COUNT(*) AS num_probs FROM table_name GROUP BY vend_id;
-- 
+- 过滤分组: SLECT cust_id, COUNT(*) AS orders FROM table_name GROUP BY cust_id HAVING COUNT(**) >= 2;
+- 过滤分组和筛选条件: SELECT vend_id, COUNT(*) AS num_probs FROM table_name WHERE prob_price >= 10 GROUP BY vend_id HAVING COUNT(**) >= 2;
+- 分组和排序: SELECT order_num, SUM(quantity*item_price) AS ordertatol FROM table_name GROUP BY order_num HAVING SUM(quantity**item_price) >= 50 ORDER BY ordertatol
+- SELECT子句顺序: SELECT->FROM->WHERE->GROUP BY->HAVING->ORDER BY->LIMIT
+
+### 使用子查询
+- SELECT cust_id FROM orders WHERE order_num in (SELECT order_num FROM orderitems WHERE prod_id = 'TNT2')
+
+### 联结表
+- 创建联结: SELECT vend_name, prod_name, prod_price FROM vendors, products WHERE vendors.vend_id = products.vend_id ORDER BY vend_name, prod_name
+- 联结多个表: SELECT prod_name, vend_name, prod_price, quantity FROM orderitems, products, vendors WHERE products.vend_id = vendors.vend_id AND orderitems.prod_id = products.prod_id AND order_num = 20005; (等值联结)
+- 联结可以替代子查询
+
+### 创建高级联结
+- 使用表别名: SELECT cust_name, cust_contact FROM customers AS c, orders AS o, orderitems AS oi WHERE c.cust_id = o.cust_id AND oi.order_num = o.order_num AND prod_id = 'TNT2'
+- 自联结: SELECT p1.prod_id, p1.prod_name FROM products AS p1, products AS p2 WHERE p1.vend_id = p2.vend_id AND p2.prod_id = 'DTNTR';
+- 自然联结: SELECT c.*, o.order_number, o.order_date, oi.prod_id FROM customers AS c, orders AS o, orderitems AS oi WHERE c.cust_id = o.cust_id AND oi.order_num = o.order_number AND prod_id = 'FB'
+- 外部联结: SELECT customers.cust_id, orders.order_num FROM customers INNER JOIN orders ON customers.cust_id = orders.cust_id;(内部联结); SELECT customers.cust_id, orders.order_num FROM customers LEFT OUTER JOIN orders ON customers.cust_id = order.cust_id;(外部联结,同时返回左表的未关联行)
+- 带聚合函数的联结: SELECT customers.cust_name, customers.cust_id, COUNT(order.order_num) AS num_ord FROM customers INNER JOIN orders ON customers.cust_id = orders.cust_id GROUP BY customers.cust_id;(检索所有客户和每个客户的订单数)
+
+### 组合查询
+- 使用UNION: SELECT vend_id, prod_id FROM products WHERE prod_price <= 5 UNION SELECT vend_id, prod_id FROM products WHERE vend_id in (1001,1003); (UNION必须由两条以上SELECT语句构成，每个查询必须包含相同的列，表达式或者聚合函数)
+- 包含或者取消重复行: UNION会自动取消两条SELECT语句返回的重复行，使用UNION ALL返回所有匹配行;
+- 对组合查询结果排序: aaa UNION bbb ORDER BY vend_id, prod_price;(只能在多条SELECT语句最后用一次ORDER BY对所有返回结果进行排序)
+
+### 插入数据
+- 插入完整的行: INSERT INTO table_name VALUES(NULL, 'Pep', '100 Main Street', 'Los Angeles', 'CA', '90046', 'USA', NULL);(必须按顺序给出所有列)
+- 更安全的方法: INSERT INTO customers(cust_name, cust_address, cust_city, cust_zip) VALUES('Pep', '100 Main Street', 'Los Angeles', '90046')
+- 插入多个行: INSERT INTO customers(template) VALUES(values); INSERT INTO customers(template) VALUES(values); 或者 INSERT INTO customers(template) VALUES(values1), (values2);
+- 插入检索出的数据: INSERT INTO customers(template) SELECT template FROM custnew;(SELECT语句也可以包含WHERE子句过滤插入的数据)
+
+
 
 
 ## **Python知识点**
