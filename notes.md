@@ -165,7 +165,31 @@ time: 2019.07.01
 - 更新所有行数据: UPDATE table_name SET col_name1='value1', col_name2='value2'
 - 删除特定行数据: DELETE FROM table_name WHERE col_name = 'values'
 
+### 创建和操纵表
+- 表创建基础: 
+'''
+CREATE TABLE customers
+(
+    cust_id            int            NOT NULL AUTO_INCREMENT,
+    cust_name          char(50)       NOT NULL,
+    cust_address       char(50)       NULL,
+    cust_city          char(50)       NOT NULL DEFAULT 1, 
+    cust_state         char(50)       NULL,
+    cust_email         char(255)      NULL,
+    PRIMARY KEY (cust_id)
+)
+'''
+- 更新表添加列: ALTER TABLE vendors ADD vend_phone CHAR(20)
+- 更新表删除列: ALTER TABLE vendors DROP COLUMN vend_phone;
+- 删除表: DROP TABLE customers;
+- 重命名表: RENAME TABLE customers TO customers_new;
 
+### 使用视图
+- 利用视图简化复杂的联结: CREATE VIEW productscustomers AS SELECT cust_name, cust_contact, prod_id FROM customers, orders, orderitems WHERE customers.cust_id = orders.cust_id AND orderitems.order_num = orders.order_num; (这个生成的视图联结了三个表，为了检索订购TNT2的客户) SELECT cust_name, cust_contact FROM productscustomers WHERE prod_id = 'TNT2'; (所以可以一次性编写基础的视图，多次使用其查询)
+- 用视图重新格式化检索出的数据: CREATE VIEW vendorlocations AS SELECT Concat(RTrim(vend_name), '(', RTrim(vend_country),')') AS vend_title FROM vendors ORDER BY vend_name; (现在假如经常需要用到这个格式，不必在每次需要时都执行联结，创建一次多次使用）SELECT * FROM vendorlocations;
+- 用视图过滤不想要的数据: CREATE VIEW customeremaillist AS SELECT cust_id, cust_name, cust_email FROM customers WHERE cust_email IS NOT null;(然后像其他表一样使用视图) SELECT * FROM customeremaillist;
+- 使用视图与计算字段: CREATE VIEW orderitemsexpanded AS SELECT order_num, prod_id, quantity*item_price AS expanded_price FROM orderitems;
+- 
 
 
 ## **Python知识点**
