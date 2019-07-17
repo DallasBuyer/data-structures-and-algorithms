@@ -167,7 +167,7 @@ time: 2019.07.01
 
 ### 创建和操纵表
 - 表创建基础: 
-'''
+```SQL
 CREATE TABLE customers
 (
     cust_id            int            NOT NULL AUTO_INCREMENT,
@@ -178,7 +178,7 @@ CREATE TABLE customers
     cust_email         char(255)      NULL,
     PRIMARY KEY (cust_id)
 )
-'''
+``` 
 - 更新表添加列: ALTER TABLE vendors ADD vend_phone CHAR(20)
 - 更新表删除列: ALTER TABLE vendors DROP COLUMN vend_phone;
 - 删除表: DROP TABLE customers;
@@ -241,6 +241,9 @@ CREATE TABLE customers
 |                   list[a:]                   |                 切片索引a到末尾                  |
 |                   list[:b]                   |                切片索引开头到b-1                 |
 |                   list[::]                   |                     全部索引                     |
+|                  list[::-2]                  |             逆向2为间隔遍历所有元素              |
+|                  list[:2:2]                  |       以0位置开头，终止于1，以2为间隔遍历        |
+|             list[begin:endd:gap]              |                  列表的切片操作                  |
 |              cmp(list1, list2)               |                比较两个列表的元素                |
 |                  min(list)                   |                   取列表最小值                   |
 |                  max(list)                   |                   取列表最大值                   |
@@ -266,3 +269,15 @@ CREATE TABLE customers
 
 
 ### 8. 拷贝Python对象，浅拷贝和深拷贝
+
+### 9. 用List而非Numpy声明多维数组
+
+```Python
+res_list = [[0 for i in range(lengthA)] for j in range(lengthB)]
+res_list[i][j]
+# 相当于
+import numpy as np
+res_np = np.zeros((lengthA, lengthB))
+res_np[i, j]
+```
+此处用List声明的数组索引的方式与用Numpy声明的数组索引方式不同
